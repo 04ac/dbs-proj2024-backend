@@ -1,0 +1,4 @@
+secret_ops.py
+venv/
+.idea/
+__pycache__/
