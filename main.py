@@ -2,7 +2,7 @@ from datetime import datetime
 
 from fastapi import FastAPI, HTTPException
 from models import *
-from secret_ops import get_connection
+from connect_db import get_connection
 
 app = FastAPI()
 

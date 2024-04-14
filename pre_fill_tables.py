@@ -1,7 +1,7 @@
 import csv
 import ast
 import pandas as pd
-from secret_ops import get_connection
+from connect_db import get_connection
 
 # Function to insert authors from CSV into database
 def insert_authors_from_csv(csv_file):
