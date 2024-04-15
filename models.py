@@ -1,3 +1,5 @@
+from datetime import date
+
 from pydantic import BaseModel
 
 
@@ -34,8 +36,7 @@ class Format(BaseModel):
 # Model for Customer
 class Customer(BaseModel):
     name: str
-    last_visit: str
-
+    account_created: date
 # Model for Main
 class Main(BaseModel):
     category_id: int

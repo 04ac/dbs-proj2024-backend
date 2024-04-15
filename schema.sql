@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Customers (
     customer_id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     passwd VARCHAR(255),
-    last_visit DATE
+    account_created DATE
 );
 
 CREATE TABLE IF NOT EXISTS Main (
@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS Ratings (
     FOREIGN KEY (book_id) REFERENCES Main(book_id) ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS Book_Issued (
+CREATE TABLE IF NOT EXISTS WISHLIST (
     customer_id INT,
     book_id INT,
     PRIMARY KEY (customer_id, book_id),
