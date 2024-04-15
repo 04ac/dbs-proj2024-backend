@@ -467,14 +467,14 @@ def add_to_wishlist(book_issued: BookIssued):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Get all BookIssued records
-@app.get("/wishlist/")
-def get_wishlist():
+# Get all Wishlist records
+@app.get("/wishlist/{customer_id}")
+def get_wishlist(customer_id: int):
     connection = get_db_connection()
     try:
         with connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM wishlist")
+                cursor.execute("SELECT * FROM wishlist where customer_id=" + str(customer_id) + ";")
                 wishlist = cursor.fetchall()
         return {"wishlist": wishlist}
     except Exception as e:
