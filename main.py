@@ -263,7 +263,7 @@ def get_all_customers(name: str, passwd: str):
     try:
         with connection:
             with connection.cursor() as cursor:
-                cursor.execute("SELECT * FROM Customers where name=" + name + " and passwd=" + passwd + ";")
+                cursor.execute("SELECT * FROM Customers where name='" + name + "' and passwd='" + passwd + "';")
                 customers = cursor.fetchall()
         return {"customer": customers}
     except Exception as e:
