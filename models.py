@@ -37,6 +37,8 @@ class Format(BaseModel):
 class Customer(BaseModel):
     name: str
     account_created: date
+    passwd: str
+
 # Model for Main
 class Main(BaseModel):
     category_id: int
