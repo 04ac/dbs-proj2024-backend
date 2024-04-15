@@ -84,7 +84,7 @@ def get_books():
 
 # Create Author
 @app.post("/authors/")
-async def create_author(author: Author):
+def create_author(author: Author):
     connection = get_db_connection()
     try:
         with connection:
@@ -98,7 +98,7 @@ async def create_author(author: Author):
 
 # Get all Authors
 @app.get("/authors/")
-async def get_all_authors():
+def get_all_authors():
     connection = get_db_connection()
     try:
         with connection:
@@ -112,7 +112,7 @@ async def get_all_authors():
 
 # Create Category
 @app.post("/categories/")
-async def create_category(category: Category):
+def create_category(category: Category):
     connection = get_db_connection()
     try:
         with connection:
@@ -127,7 +127,7 @@ async def create_category(category: Category):
 
 # Get all Categories
 @app.get("/categories/")
-async def get_all_categories():
+def get_all_categories():
     connection = get_db_connection()
     try:
         with connection:
@@ -141,7 +141,7 @@ async def get_all_categories():
 
 # Create Publisher
 @app.post("/publishers/")
-async def create_publisher(publisher: Publisher):
+def create_publisher(publisher: Publisher):
     connection = get_db_connection()
     try:
         with connection:
@@ -155,7 +155,7 @@ async def create_publisher(publisher: Publisher):
 
 # Get all Publishers
 @app.get("/publishers/")
-async def get_all_publishers():
+def get_all_publishers():
     connection = get_db_connection()
     try:
         with connection:
@@ -169,7 +169,7 @@ async def get_all_publishers():
 
 # Create Edition
 @app.post("/editions/")
-async def create_edition(edition: Edition):
+def create_edition(edition: Edition):
     connection = get_db_connection()
     try:
         with connection:
@@ -183,7 +183,7 @@ async def create_edition(edition: Edition):
 
 # Get all Editions
 @app.get("/editions/")
-async def get_all_editions():
+def get_all_editions():
     connection = get_db_connection()
     try:
         with connection:
@@ -197,7 +197,7 @@ async def get_all_editions():
 
 # Create Format
 @app.post("/formats/")
-async def create_format(format: Format):
+def create_format(format: Format):
     connection = get_db_connection()
     try:
         with connection:
@@ -211,7 +211,7 @@ async def create_format(format: Format):
 
 # Get all Formats
 @app.get("/formats/")
-async def get_all_formats():
+def get_all_formats():
     connection = get_db_connection()
     try:
         with connection:
@@ -256,10 +256,23 @@ def get_all_customers():
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+# For customer auth
+@app.get("/customer-auth/{name}/{passwd}")
+def get_all_customers(name: str, passwd: str):
+    connection = get_db_connection()
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT * FROM Customers where name=" + name + " and passwd=" + passwd + ";")
+                customers = cursor.fetchall()
+        return {"customer": customers}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Create Main
 @app.post("/main/")
-async def create_main(main: Main):
+def create_main(main: Main):
     connection = get_db_connection()
     try:
         with connection:
@@ -276,7 +289,7 @@ async def create_main(main: Main):
 
 # Get all Main records
 @app.get("/main/")
-async def get_all_main():
+def get_all_main():
     connection = get_db_connection()
     try:
         with connection:
@@ -290,7 +303,7 @@ async def get_all_main():
 
 # Create Physical_Attr
 @app.post("/physical-attr/")
-async def create_physical_attr(physical_attr: PhysicalAttr):
+def create_physical_attr(physical_attr: PhysicalAttr):
     connection = get_db_connection()
     try:
         with connection:
@@ -306,7 +319,7 @@ async def create_physical_attr(physical_attr: PhysicalAttr):
 
 # Get all Physical_Attr records
 @app.get("/physical-attr/")
-async def get_all_physical_attr():
+def get_all_physical_attr():
     connection = get_db_connection()
     try:
         with connection:
@@ -320,7 +333,7 @@ async def get_all_physical_attr():
 
 # Create Image
 @app.post("/images/")
-async def create_image(image: Image):
+def create_image(image: Image):
     connection = get_db_connection()
     try:
         with connection:
@@ -334,7 +347,7 @@ async def create_image(image: Image):
 
 # Get all Image records
 @app.get("/images/")
-async def get_all_images():
+def get_all_images():
     connection = get_db_connection()
     try:
         with connection:
@@ -348,7 +361,7 @@ async def get_all_images():
 
 # Create ISBN
 @app.post("/isbn/")
-async def create_isbn(isbn: ISBN):
+def create_isbn(isbn: ISBN):
     connection = get_db_connection()
     try:
         with connection:
@@ -363,7 +376,7 @@ async def create_isbn(isbn: ISBN):
 
 # Get all ISBN records
 @app.get("/isbn/")
-async def get_all_isbn():
+def get_all_isbn():
     connection = get_db_connection()
     try:
         with connection:
@@ -377,7 +390,7 @@ async def get_all_isbn():
 
 # Create Description
 @app.post("/descriptions/")
-async def create_description(description: Description):
+def create_description(description: Description):
     connection = get_db_connection()
     try:
         # Convert string pub_date to date object
@@ -397,7 +410,7 @@ async def create_description(description: Description):
 
 # Get all Description records
 @app.get("/descriptions/")
-async def get_all_descriptions():
+def get_all_descriptions():
     connection = get_db_connection()
     try:
         with connection:
@@ -411,7 +424,7 @@ async def get_all_descriptions():
 
 # Create Ratings
 @app.post("/ratings/")
-async def create_rating(rating: Rating):
+def create_rating(rating: Rating):
     connection = get_db_connection()
     try:
         with connection:
@@ -428,7 +441,7 @@ async def create_rating(rating: Rating):
 
 # Get all Ratings records
 @app.get("/ratings/")
-async def get_all_ratings():
+def get_all_ratings():
     connection = get_db_connection()
     try:
         with connection:
@@ -442,7 +455,7 @@ async def get_all_ratings():
 
 # Create BookIssued
 @app.post("/wishlist/")
-async def add_to_wishlist(book_issued: BookIssued):
+def add_to_wishlist(book_issued: BookIssued):
     connection = get_db_connection()
     try:
         with connection:
@@ -456,7 +469,7 @@ async def add_to_wishlist(book_issued: BookIssued):
 
 # Get all BookIssued records
 @app.get("/wishlist/")
-async def get_wishlist():
+def get_wishlist():
     connection = get_db_connection()
     try:
         with connection:
@@ -470,7 +483,7 @@ async def get_wishlist():
 
 # Create Recommendation
 @app.post("/recommendations/")
-async def create_recommendation(recommendation: Recommendation):
+def create_recommendation(recommendation: Recommendation):
     connection = get_db_connection()
     try:
         with connection:
@@ -484,7 +497,7 @@ async def create_recommendation(recommendation: Recommendation):
 
 # Get all Recommendation records
 @app.get("/recommendations/")
-async def get_all_recommendations():
+def get_all_recommendations():
     connection = get_db_connection()
     try:
         with connection:
@@ -498,7 +511,7 @@ async def get_all_recommendations():
 
 # Create AuthBook
 @app.post("/auth-books/")
-async def create_auth_book(auth_book: AuthBook):
+def create_auth_book(auth_book: AuthBook):
     connection = get_db_connection()
     try:
         with connection:
@@ -512,7 +525,7 @@ async def create_auth_book(auth_book: AuthBook):
 
 # Get all AuthBook records
 @app.get("/auth-books/")
-async def get_all_auth_books():
+def get_all_auth_books():
     connection = get_db_connection()
     try:
         with connection:
