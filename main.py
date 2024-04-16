@@ -486,6 +486,18 @@ def get_wishlist(customer_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.delete("/wishlist/{customer_id}/{book_id}")
+def delete_wishlist_item(customer_id: int, book_id: int):
+    connection = get_db_connection()
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute("DELETE FROM WISHLIST WHERE customer_id = %s AND book_id = %s", (customer_id, book_id))
+        return {"message": f"Record with customer_id {customer_id} and book_id {book_id} deleted successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 # Create Recommendation
 @app.post("/recommendations/")
 def create_recommendation(recommendation: Recommendation):
