@@ -488,11 +488,21 @@ def get_wishlist(customer_id: int):
 
 @app.delete("/wishlist/{customer_id}/{book_id}")
 def delete_wishlist_item(customer_id: int, book_id: int):
-    connection = get_db_connection()
     try:
+        connection = get_db_connection()
         with connection:
             with connection.cursor() as cursor:
-                cursor.execute("DELETE FROM WISHLIST WHERE customer_id = %s AND book_id = %s", (customer_id, book_id))
+                cursor.execute(
+                    """
+                    DO $$
+                    BEGIN
+                        DELETE FROM WISHLIST WHERE customer_id = %s AND book_id = %s;
+                        IF NOT FOUND THEN
+                            RAISE EXCEPTION 'Record with customer_id %s and book_id %s not found';
+                        END IF;
+                    END $$;
+                    """, (customer_id, book_id, customer_id, book_id)
+                )
         return {"message": f"Record with customer_id {customer_id} and book_id {book_id} deleted successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
