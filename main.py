@@ -64,6 +64,24 @@ def get_books():
                         Editions e ON m.edition_id = e.edition_id
                     LEFT JOIN
                         Physical_Attr pa ON m.book_id = pa.book_id
+                    GROUP BY 
+                        m.book_id,
+                        d.title,
+                        d.Description,
+                        d.pub_date,
+                        r.rating_avg,
+                        c.category,
+                        r.rating_count,
+                        r.for_ages,
+                        i.url,
+                        f.format,
+                        p.name,
+                        isbn.isbn10,
+                        e.editions,
+                        pa.x,
+                        pa.y,
+                        pa.z,
+                        pa.w;
                 """)
                 result = cursor.fetchall()
     except Exception as e:
