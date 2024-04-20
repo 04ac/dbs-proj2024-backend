@@ -3,7 +3,7 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from models import *
 from connect_db import get_connection
-from recommend import get_recommendations
+from recommend import recommender
 
 app = FastAPI()
 
@@ -106,7 +106,7 @@ def get_books():
 
 @app.get("/recommend/{index}")
 def get_recommendation(index: int):
-    return {"recommendations": get_recommendations(index)}
+    return {"recommendations": recommender(index)}
 
 
 # Create Author

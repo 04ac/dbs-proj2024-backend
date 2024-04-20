@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
 
-data = pd.read_csv("recommender_data.csv")
-recommendations = []
 
-
-def get_recommendations(index, data):
+def get_recommendations(index, data, recommendations):
     recommendations.clear()
     for i in data.loc[:, 'book_id']:
         i = i - 1
@@ -17,7 +14,9 @@ def get_recommendations(index, data):
 
 
 def recommender(index):
-    get_recommendations(index, data)
+    data = pd.read_csv("recommender_data.csv")
+    recommendations = []
+    get_recommendations(index, data, recommendations)
     for book in sorted(recommendations, key=lambda x: x[1])[1:6]:
         print(data.index[book[0]])
 
