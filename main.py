@@ -92,11 +92,16 @@ def get_books():
             "categories": row[6],
             "for_ages": row[7],
             "authors": row[8],
-            "image_url": row[9]
+            "image_url": row[9],
+            "format": row[10],
+            "publisher": row[11],
+            "isbn": row[12],
+            "edition": row[13]
         }
         books.append(book)
 
     return {"books": books}
+
 
 
 # @app.get("/recommend/{index}")
