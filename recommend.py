@@ -1,17 +1,27 @@
 import pandas as pd
-from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
 
 data = pd.read_csv("recommender_data.csv")
-similarities = cosine_similarity(data)
+recommendations = []
 
 
-def give_recommendation(index):
-    data = pd.read_csv("recommender_data.csv")
-    similarities = cosine_similarity(data)
-    for book in sorted(list(enumerate(similarities[index])), key=lambda x: x[1], reverse=True)[1:6]:
+def get_recommendations(index, data):
+    recommendations.clear()
+    for i in data.loc[:, 'book_id']:
+        i = i - 1
+        if data.loc[i, 'for_ages'] == data.loc[index, 'for_ages']:
+            distance = np.abs(data.loc[i, 'bestsellers-rank'] - data.loc[index, 'bestsellers-rank']) + np.abs(
+                data.loc[i, 'category_id'] - data.loc[index, 'category_id']) + np.abs(
+                data.loc[i, 'rating_avg'] - data.loc[index, 'rating_avg'])
+            recommendations.append([i, distance])
+
+
+def recommender(index):
+    get_recommendations(index, data)
+    for book in sorted(recommendations, key=lambda x: x[1])[1:6]:
         print(data.index[book[0]])
 
 
 if __name__ == '__main__':
     index = input("Enter book index:")
-    give_recommendation((int(index)))
+    recommender(int(index))

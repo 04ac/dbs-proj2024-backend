@@ -3,6 +3,7 @@ from datetime import datetime
 from fastapi import FastAPI, HTTPException
 from models import *
 from connect_db import get_connection
+from recommend import get_recommendations
 
 app = FastAPI()
 
@@ -103,10 +104,9 @@ def get_books():
     return {"books": books}
 
 
-
-# @app.get("/recommend/{index}")
-# def get_recommendation(index: int):
-#     return {"recommendations": give_recommendation(index)}
+@app.get("/recommend/{index}")
+def get_recommendation(index: int):
+    return {"recommendations": get_recommendations(index)}
 
 
 # Create Author
@@ -282,6 +282,7 @@ def get_all_customers():
         return {"customers": customers}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 # For customer auth
 @app.get("/customer-auth/{name}/{passwd}")
