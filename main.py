@@ -35,7 +35,11 @@ def get_books():
                         f.format AS format,
                         p.name AS publisher,
                         isbn.isbn10 AS isbn,
-                        e.editions AS edition
+                        e.editions AS edition,
+                        pa.x AS dimension_x,
+                        pa.y AS dimension_y,
+                        pa.z AS dimension_z,
+                        pa.w AS dimension_w
                     FROM 
                         Main m
                     JOIN 
@@ -58,23 +62,10 @@ def get_books():
                         ISBN isbn ON m.book_id = isbn.book_id
                     LEFT JOIN
                         Editions e ON m.edition_id = e.edition_id
-                    GROUP BY 
-                        m.book_id,
-                        d.title,
-                        d.Description,
-                        d.pub_date,
-                        r.rating_avg,
-                        c.category,
-                        r.rating_count,
-                        r.for_ages,
-                        i.url,
-                        f.format,
-                        p.name,
-                        isbn.isbn10,
-                        e.editions;
+                    LEFT JOIN
+                        Physical_Attr pa ON m.book_id = pa.book_id
                 """)
                 result = cursor.fetchall()
-                print(result)
     except Exception as e:
         print(e)
     finally:
@@ -97,11 +88,16 @@ def get_books():
             "format": row[10],
             "publisher": row[11],
             "isbn": row[12],
-            "edition": row[13]
+            "edition": row[13],
+            "dimension_x": row[14],
+            "dimension_y": row[15],
+            "dimension_z": row[16],
+            "dimension_w": row[17]
         }
         books.append(book)
 
     return {"books": books}
+
 
 
 @app.get("/recommend/{index}")
