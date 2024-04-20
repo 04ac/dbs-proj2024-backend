@@ -30,7 +30,11 @@ def get_books():
                         c.category AS categories,
                         r.for_ages AS for_ages,
                         json_agg(a.name) AS authors,
-                        i.url AS image_url
+                        i.url AS image_url,
+                        f.format AS format,
+                        p.name AS publisher,
+                        isbn.isbn10 AS isbn,
+                        e.editions AS edition
                     FROM 
                         Main m
                     JOIN 
@@ -45,6 +49,14 @@ def get_books():
                         Categories c ON m.category_id = c.category_id
                     LEFT JOIN
                         Image i ON m.book_id = i.book_id
+                    LEFT JOIN
+                        Formats f ON m.format_id = f.format_id
+                    LEFT JOIN
+                        Publisher p ON m.publisher_id = p.publisher_id
+                    LEFT JOIN
+                        ISBN isbn ON m.book_id = isbn.book_id
+                    LEFT JOIN
+                        Editions e ON m.edition_id = e.edition_id
                     GROUP BY 
                         m.book_id,
                         d.title,
@@ -54,11 +66,16 @@ def get_books():
                         c.category,
                         r.rating_count,
                         r.for_ages,
-                        i.url;
+                        i.url,
+                        f.format,
+                        p.name,
+                        isbn.isbn10,
+                        e.editions;
                 """)
                 result = cursor.fetchall()
+                print(result)
     except Exception as e:
-        return {"error": str(e)}
+        print(e)
     finally:
         connection.close()
 
