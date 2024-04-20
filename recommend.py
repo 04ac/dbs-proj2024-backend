@@ -16,9 +16,11 @@ def get_recommendations(index, data, recommendations):
 def recommender(index):
     data = pd.read_csv("recommender_data.csv")
     recommendations = []
+    ret = []
     get_recommendations(index, data, recommendations)
     for book in sorted(recommendations, key=lambda x: x[1])[1:6]:
-        print(data.index[book[0]])
+        ret.append(data.index[book[0]])
+    return ret
 
 
 if __name__ == '__main__':
