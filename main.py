@@ -117,10 +117,17 @@ def get_books():
     return {"books": books}
 
 
-
-@app.get("/recommend/{index}")
-def get_recommendation(index: int):
-    return {"recommendations": recommender(index)}
+@app.get("/recommend/{customer_id}")
+def get_recommendation(customer_id: int):
+    connection = get_db_connection()
+    try:
+        with connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT book_id FROM recommendations where customer_id=" + str(customer_id) + ";")
+                recs = cursor.fetchall()
+        return {"recommendations": recs}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # Create Author
