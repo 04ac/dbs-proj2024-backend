@@ -26,8 +26,7 @@ CREATE TABLE IF NOT EXISTS Formats (
 CREATE TABLE IF NOT EXISTS Customers (
     customer_id SERIAL PRIMARY KEY,
     name VARCHAR(255),
-    passwd VARCHAR(255),
-    account_created DATE
+    passwd VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS Main (
@@ -106,5 +105,9 @@ CREATE TABLE IF NOT EXISTS Auth_Book (
     FOREIGN KEY (auth_id) REFERENCES Authors(auth_id) ON DELETE CASCADE
 );
 
---- REMAINING not pre-filled tables
----- CUSTOMERS, BOOK_ISSUED, RECOMMENDATIONS
+CREATE TABLE IF NOT EXISTS CustomerLogin (
+    customer_id INT,
+    last_login TIMESTAMP,
+    PRIMARY KEY (customer_id),
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id) ON DELETE CASCADE
+);

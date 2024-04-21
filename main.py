@@ -284,14 +284,13 @@ def create_customer(customer: Customer):
         with connection:
             with connection.cursor() as cursor:
                 cursor.execute(
-                    "INSERT INTO Customers (name, account_created, passwd) VALUES (%s, %s, %s) RETURNING customer_id",
-                    (customer.name, customer.account_created, customer.passwd)
+                    "INSERT INTO Customers (name, passwd) VALUES (%s, %s) RETURNING customer_id",
+                    (customer.name, customer.passwd)
                 )
                 customer_id = cursor.fetchone()[0]
         return {
             "customer_id": customer_id,
             "name": customer.name,
-            "account_created": customer.account_created.isoformat(),  # Convert date to ISO format for response
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
