@@ -125,9 +125,15 @@ def get_recommendation(customer_id: int):
             with connection.cursor() as cursor:
                 cursor.execute("SELECT book_id FROM recommendations where customer_id=" + str(customer_id) + ";")
                 recs = cursor.fetchall()
-        return {"recommendations": recs}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        connection.close()
+
+    ret = []
+    for rec in recs:
+        ret.append(rec[0])
+    return {"recommendations": ret}
 
 
 # Create Author
