@@ -503,7 +503,7 @@ def add_to_wishlist(book_issued: BookIssued):
         with connection:
             with connection.cursor() as cursor:
                 cursor.execute("CALL wishlist_package.insert_wishlist(%s, %s)",
-                               (book_issued.customer_id, book_issued.book_id))
+                               (int(book_issued.customer_id), int(book_issued.book_id)))
 
                 recommendations = recommender(book_issued.book_id)
 
@@ -511,7 +511,7 @@ def add_to_wishlist(book_issued: BookIssued):
 
                 for recommendation in recommendations:
                     cursor.execute("CALL wishlist_package.insert_recommendations(%s, %s)",
-                                   (book_issued.customer_id, recommendation))
+                                   (int(book_issued.customer_id), int(recommendation)))
 
         return {"recommendations": recommendations}
     except Exception as e:
