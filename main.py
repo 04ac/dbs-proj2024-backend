@@ -511,7 +511,7 @@ def add_to_wishlist(book_issued: BookIssued):
 
                 for recommendation in recommendations:
                     cursor.execute("CALL wishlist_package.insert_recommendations(%s, %s)",
-                                   (int(book_issued.customer_id), int(recommendation)))
+                                   (int(book_issued.customer_id), int(recommendation) + 1))
 
         return {"recommendations": recommendations}
     except Exception as e:
