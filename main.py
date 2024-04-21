@@ -495,16 +495,21 @@ def get_all_ratings():
         raise HTTPException(status_code=500, detail=str(e))
 
 
-# Create BookIssued
+# returns a list of recommendations after adding to wishlist
 @app.post("/wishlist/")
 def add_to_wishlist(book_issued: BookIssued):
     connection = get_db_connection()
     try:
         with connection:
             with connection.cursor() as cursor:
-                cursor.execute("INSERT INTO wishlist (customer_id, book_id) VALUES (%s, %s)",
-                               (book_issued.customer_id, book_issued.book_id,))
-        return {"customer_id": book_issued.customer_id, "book_id": book_issued.book_id}
+                cursor.execute("wishlist_package.insert_wishlist(%s, %s)",
+                               (book_issued.customer_id, book_issued.book_id))
+                recommendations = recommender(book_issued.book_id)
+                cursor.execute("delete from recommendations where customer_id = %s", book_issued.customer_id)
+                for recommendation in recommendations:
+                    cursor.execute("wishlist_package.insert_recommendations(%s, %s)", book_issued.customer_id,
+                                   recommendation)
+        return {"recommendations": recommendations}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
